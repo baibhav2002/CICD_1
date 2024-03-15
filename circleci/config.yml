@@ -1,0 +1,29 @@
+version: 2.1
+job:
+  build_test:
+    docker:
+      -image: circleci/node:12
+    steps:
+      -checkout
+      -run:
+        name: Install npm dependencies
+        command:
+          npm install --save
+  build_docker_image:
+    docker:
+      -image: circleci/node:12
+    steps: 
+      -checkout
+      -setup_remote_docker:
+        docker_layer_caching: false
+      -run
+        name: Build Docker image
+        command:
+          docker build -t nodejswebapp -t baibhav2002/nodejswebapp:latest 
+          echo $Docker_password | docker login -v baibhav2002 --password-stdin
+          docker push baibhav2002/nodejswebapp:latest
+workflow:
+  build_test:
+    job:
+      -build_test
+      _build_docker_image
