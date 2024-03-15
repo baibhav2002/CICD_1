@@ -16,7 +16,7 @@ job:
       -checkout
       -setup_remote_docker:
         docker_layer_caching: false
-      -run
+      -run:
         name: Build Docker image
         command:
           docker build -t nodejswebapp -t baibhav2002/nodejswebapp:latest 
